@@ -39,10 +39,10 @@ void LinkedList::insertLast(vector<int> data) {
 
 // Métodos de la Bitacora
 bitacora::bitacora(vector<string> l) {
-    this -> l = l;
+    lineas_iniciales = l;
     for (int c = 0; c < l.size(); ++c) {
         string linea = l[c];
-        string ip_string = linea.substr(16, linea.find(" ", 16) - 16);
+        string ip_string = linea.substr(15, linea.find(" ", 16) - 16); //Justificar
         vector<int> ip_vector;
         string temp;
 
@@ -83,7 +83,7 @@ void bitacora::crear_archivo(LinkedList lista, int option) {
         nodo* current = lista.head;
         while (current != nullptr) {
             vector<int> ip = current -> ip;
-            archivo << l[ip[5]] << endl;
+            archivo << lineas_iniciales[ip[5]] << endl;
             current = current -> next;
         }
         archivo.close();
@@ -204,3 +204,25 @@ void bitacora::ordenar() {
     lista_ordenada = mergeSort(lista_ips);
     crear_archivo(lista_ordenada, 1);
 }
+
+void bitacora::buscar(vector<int> ip_busqueda_inicio, vector<int> ip_busqueda_fin) {
+    LinkedList resultados;
+    nodo* current = lista_ordenada.head;
+
+    while (current != nullptr) {
+        vector<int> ip = current -> ip;
+        if (ip[0] > ip_busqueda_inicio[0] && ip[1] > ip_busqueda_inicio[1] && ip[2] > ip_busqueda_inicio[2] && ip[3] > ip_busqueda_inicio[3] && ip[4] >= ip_busqueda_inicio[4] &&
+            ip[0] < ip_busqueda_fin[0] && ip[1] < ip_busqueda_fin[1] && ip[2] < ip_busqueda_fin[2] && ip[3] < ip_busqueda_fin[3] && ip[4] <= ip_busqueda_fin[4]) {
+            if (resultados.size == 0) {
+                resultados.insertFirst(ip);
+            }
+            else{
+                resultados.insertLast(ip);
+            }
+        }
+        current = current -> next;
+    }
+   crear_archivo(resultados, 2);
+   contadorBusquedas++;
+}
+  
