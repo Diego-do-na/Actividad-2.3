@@ -15,6 +15,18 @@ LinkedList::LinkedList() {
     tail = nullptr;
 }
 
+LinkedList::~LinkedList() {
+    nodo* actual = head;
+    while (actual != nullptr) {
+        nodo* temp = actual;
+        actual = actual->next;
+        delete temp;
+    }
+    head = nullptr;
+    tail = nullptr;
+}
+
+
 void LinkedList::insertFirst(vector<int> data) {
     nodo* nuevo = new nodo(data, this -> head);
     if (this -> size == 0){
@@ -36,6 +48,7 @@ void LinkedList::insertLast(vector<int> data) {
     }
     this -> size++;
 }
+
 
 // Métodos de la Bitacora
 bitacora::bitacora(vector<string> l) {
@@ -69,7 +82,7 @@ bitacora::bitacora(vector<string> l) {
     }
 }
 
-void bitacora::crear_archivo(LinkedList lista, int option) {
+void bitacora::crear_archivo(const LinkedList& lista, int option) {
     string nombre_archivo;
     if (option == 1) {
         nombre_archivo = "bitacoraOrdenadaa1.3-eq6.txt";
@@ -205,24 +218,36 @@ void bitacora::ordenar() {
     crear_archivo(lista_ordenada, 1);
 }
 
+bool bitacora::ipMenoroIgual(vector<int> a, vector<int> b) {
+    if (a.size()==5 && b.size()==5) {
+        return a <= b;
+    }
+    return false;
+}
+
+bool bitacora::ipMayoroIgual(vector<int> a, vector<int> b) {
+    if (a.size()==5 && b.size()==5) {
+        return a >= b;
+    }
+    return false;
+}
+
 void bitacora::buscar(vector<int> ip_busqueda_inicio, vector<int> ip_busqueda_fin) {
     LinkedList resultados;
     nodo* current = lista_ordenada.head;
 
     while (current != nullptr) {
         vector<int> ip = current -> ip;
-        if (ip[0] > ip_busqueda_inicio[0] && ip[1] > ip_busqueda_inicio[1] && ip[2] > ip_busqueda_inicio[2] && ip[3] > ip_busqueda_inicio[3] && ip[4] >= ip_busqueda_inicio[4] &&
-            ip[0] < ip_busqueda_fin[0] && ip[1] < ip_busqueda_fin[1] && ip[2] < ip_busqueda_fin[2] && ip[3] < ip_busqueda_fin[3] && ip[4] <= ip_busqueda_fin[4]) {
-            if (resultados.size == 0) {
-                resultados.insertFirst(ip);
-            }
-            else{
-                resultados.insertLast(ip);
-            }
+        if (ipMayoroIgual(ip, ip_busqueda_inicio) && ipMenoroIgual(ip, ip_busqueda_fin)) {
+        if (resultados.size == 0) {
+            resultados.insertFirst(ip);
         }
+        else {
+            resultados.insertLast(ip);
+        }
+    }
         current = current -> next;
     }
    crear_archivo(resultados, 2);
    contadorBusquedas++;
 }
-  

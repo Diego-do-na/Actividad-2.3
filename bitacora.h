@@ -26,8 +26,9 @@ class LinkedList{
         nodo* head;
         nodo* tail;
         LinkedList();
-        void insertFirst(vector<int> ip);
-        void insertLast(vector<int> ip);
+        ~LinkedList();
+        void insertFirst(vector<int> data);
+        void insertLast(vector<int> data);
 };
 
 class bitacora{
@@ -39,8 +40,10 @@ class bitacora{
     public:
         bitacora(vector<string> l);
         bool comparar(nodo* a, nodo* b);
-        void crear_archivo(LinkedList lista, int option);
+        void crear_archivo(const LinkedList& lista, int option);
         void ordenar();
+        bool ipMenoroIgual(vector<int> a, vector<int> b);
+        bool ipMayoroIgual(vector<int> a, vector<int> b);
         void buscar(vector<int> ip_busqueda_inicio, vector<int> ip_busqueda_fin);
         LinkedList merge(nodo* izq, nodo* der);
         LinkedList mergeSort(const LinkedList& lista);
